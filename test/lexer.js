@@ -42,3 +42,7 @@ getToken('foo123', 'foo123', TokenType.Name);
 getToken('foo_123', 'foo_123', TokenType.Name);
 getToken('_foo', '_foo', TokenType.Name);
 
+// Get integer
+
+getToken('123', '123', TokenType.Integer);
+getToken('1234567890', '1234567890', TokenType.Integer);
