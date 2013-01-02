@@ -38,3 +38,7 @@ assert.equal(compileExpression('"foo"'), "'foo'");
 
 assert.equal(compileExpression("foo"), "foo");
 
+// Qualified name
+
+assert.equal(compileExpression("foo.bar"), "foo.bar");
+
