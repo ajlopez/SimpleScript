@@ -73,3 +73,9 @@ function(err) {
     assert.equal(err, 'unclosed string');
     return true;
 });
+
+// New line
+
+getToken('\n', '\n', TokenType.NewLine);
+getToken('\r\n', '\r\n', TokenType.NewLine);
+getToken('\r', '\r', TokenType.NewLine);
