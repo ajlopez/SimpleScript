@@ -33,3 +33,7 @@ assert.equal(compileExpression('123'), '123');
 
 assert.equal(compileExpression("'foo'"), "'foo'");
 assert.equal(compileExpression('"foo"'), "'foo'");
+
+// Compile name
+
+assert.equal(compileExpression("foo"), "foo");
