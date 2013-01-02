@@ -37,3 +37,15 @@ assert.equal(compileCommand('"foo"'), "'foo';");
 // Compile name
 
 assert.equal(compileCommand("foo"), "foo;");
+
+// Unclosed command
+
+assert.throws(function() {
+    var parser = new Parser('foo bar');
+    parser.parseCommand();
+},
+function(err) {
+    assert.ok(err);
+    assert.equal(err, "unexpected 'bar'");
+    return true;
+});
