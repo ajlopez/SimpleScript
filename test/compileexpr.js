@@ -15,13 +15,16 @@ var parser = new Parser();
 assert.ok(parser.parseExpression);
 assert.equal(typeof parser.parseExpression, 'function');
 
+function compileExpression(text) {
+    var parser = new Parser(text);
+    var expr = parser.parseExpression();
+    assert.ok(expr);
+    var code = expr.compile();
+    assert.ok(code);
+    assert.equal(parser.parseExpression(), null);
+    return code;
+}
+
 // Compile integer
 
-var parser = new Parser('123');
-var expr = parser.parseExpression();
-assert.ok(expr);
-var code = expr.compile();
-assert.ok(code);
-assert.equal(code, '123');
-assert.equal(parser.parseExpression(), null);
-
+assert.equal(compileExpression('123'), '123');
