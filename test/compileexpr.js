@@ -28,3 +28,8 @@ function compileExpression(text) {
 // Compile integer
 
 assert.equal(compileExpression('123'), '123');
+
+// Compile string without quotes inside
+
+assert.equal(compileExpression("'foo'"), "'foo'");
+assert.equal(compileExpression('"foo"'), "'foo'");
