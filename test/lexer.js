@@ -46,3 +46,8 @@ getToken('_foo', '_foo', TokenType.Name);
 
 getToken('123', '123', TokenType.Integer);
 getToken('1234567890', '1234567890', TokenType.Integer);
+
+// Skip spaces
+
+getToken('  foo   ', 'foo', TokenType.Name);
+getToken('  123   ', '123', TokenType.Integer);
