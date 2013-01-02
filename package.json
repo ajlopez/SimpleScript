@@ -1,0 +1,16 @@
+{ "name": "simplescript"
+, "description": "Simple Scripting Language, based on Javascript"
+, "keywords": [ "compiler", "interpreter", "javascript" ]
+, "version": "0.0.1alpha"
+, "author": "Angel 'Java' Lopez <webmaster@ajlopez.com> (http://www.ajlopez.com)"
+, "repository": { "type": "git", "url": "git://github.com/ajlopez/SimpleScript.git" }
+, "main": "./lib/simplescript.js"
+, "engines": { "node": ">= 0.6.0 && < 0.9.0" }
+, "scripts": {
+    "test": "node ./test.js"
+  }
+, "dependencies": {
+  }
+, "devDependencies": {
+  }
+}
