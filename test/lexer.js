@@ -51,3 +51,20 @@ getToken('1234567890', '1234567890', TokenType.Integer);
 
 getToken('  foo   ', 'foo', TokenType.Name);
 getToken('  123   ', '123', TokenType.Integer);
+
+// Get simple double quoted string
+
+getToken('"foo"', 'foo', TokenType.String);
+getToken('"123"', '123', TokenType.String);
+
+// Unclosed string
+
+assert.throws(function() {
+    var lexer = new Lexer('"foo');
+    lexer.nextToken();
+},
+function(err) {
+    assert.ok(err);
+    assert.equal(err, 'unclosed string');
+    return true;
+});
