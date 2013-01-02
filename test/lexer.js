@@ -26,12 +26,19 @@ assert.equal(typeof lexer.nextToken, 'function');
 var lexer = new simplescript.Lexer(null);
 assert.equal(lexer.nextToken(), null);
 
-// Get name
+function getToken(text, value, type) {
+    var lexer = new Lexer(text);
+    var token = lexer.nextToken();
+    assert.ok(token);
+    assert.equal(token.value, value);
+    assert.equal(token.type, type);
+    assert.equal(lexer.nextToken(), null);
+};
 
-var lexer = new simplescript.Lexer('foo');
-var token = lexer.nextToken();
-assert.ok(token);
-assert.equal(token.value, 'foo');
-assert.equal(token.type, TokenType.Name);
-assert.equal(lexer.nextToken(), null);
+// Get names
+
+getToken('foo', 'foo', TokenType.Name);
+getToken('foo123', 'foo123', TokenType.Name);
+getToken('foo_123', 'foo_123', TokenType.Name);
+getToken('_foo', '_foo', TokenType.Name);
 
