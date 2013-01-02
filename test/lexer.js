@@ -57,6 +57,11 @@ getToken('  123   ', '123', TokenType.Integer);
 getToken('"foo"', 'foo', TokenType.String);
 getToken('"123"', '123', TokenType.String);
 
+// Get simple single quoted string
+
+getToken("'foo'", 'foo', TokenType.String);
+getToken("'123'", '123', TokenType.String);
+
 // Unclosed string
 
 assert.throws(function() {
