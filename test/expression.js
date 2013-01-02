@@ -42,3 +42,15 @@ assert.equal(compileExpression("foo"), "foo");
 
 assert.equal(compileExpression("foo.bar"), "foo.bar");
 
+// Invalid qualified name
+
+assert.throws(function() {
+    var parser = new Parser("foo.123");
+    parser.parseExpression();
+},
+function(err) {
+    assert.ok(err);
+    assert.equal(err, 'name expected');
+    return true;
+});
+
