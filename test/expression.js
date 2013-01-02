@@ -37,3 +37,4 @@ assert.equal(compileExpression('"foo"'), "'foo'");
 // Compile name
 
 assert.equal(compileExpression("foo"), "foo");
+

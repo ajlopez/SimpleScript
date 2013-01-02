@@ -79,3 +79,11 @@ function(err) {
 getToken('\n', '\n', TokenType.NewLine);
 getToken('\r\n', '\r\n', TokenType.NewLine);
 getToken('\r', '\r', TokenType.NewLine);
+
+// Separators
+
+getToken('.', '.', TokenType.Separator);
+getToken(',', ',', TokenType.Separator);
+getToken('(', '(', TokenType.Separator);
+getToken(')', ')', TokenType.Separator);
+
