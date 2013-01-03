@@ -15,11 +15,28 @@ var parser = new Parser();
 assert.ok(parser.parseCommand);
 assert.equal(typeof parser.parseCommand, 'function');
 
+// parseCommands defined
+
+var parser = new Parser();
+
+assert.ok(parser.parseCommands);
+assert.equal(typeof parser.parseCommands, 'function');
+
 function compileCommand(text) {
     var parser = new Parser(text);
-    var expr = parser.parseCommand();
-    assert.ok(expr);
-    var code = expr.compile();
+    var cmd = parser.parseCommand();
+    assert.ok(cmd);
+    var code = cmd.compile();
+    assert.ok(code);
+    assert.equal(parser.parseCommand(), null);
+    return code;
+}
+
+function compileCommands(text) {
+    var parser = new Parser(text);
+    var cmd = parser.parseCommands();
+    assert.ok(cmd);
+    var code = cmd.compile();
     assert.ok(code);
     assert.equal(parser.parseCommand(), null);
     return code;
@@ -73,3 +90,6 @@ function(err) {
     return true;
 });
 
+// Compile commands
+
+assert.equal(compileCommands("a\nb\n"), "a; b;");
