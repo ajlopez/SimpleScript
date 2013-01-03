@@ -20,7 +20,7 @@ assert.equal(compile('"foo"'), "'foo';");
 
 // Compile name
 
-assert.equal(compile("foo"), "foo;");
+assert.equal(compile("foo"), "var foo; foo;");
 
 // Unclosed command
 
@@ -35,14 +35,14 @@ function(err) {
 
 // Compile if
 
-assert.equal(compile("if a b"), "if (a) { b; }");
-assert.equal(compile("if a\n b\n end"), "if (a) { b; }");
+assert.equal(compile("if a b"), "var a, b; if (a) { b; }");
+assert.equal(compile("if a\n b\n end"), "var a, b; if (a) { b; }");
 
 // Compile if with else
 
-assert.equal(compile("if a b else c"), "if (a) { b; } else { c; }");
-assert.equal(compile("if a\nb\nelse\nc\nend"), "if (a) { b; } else { c; }");
-assert.equal(compile("if a\n b\n c\nend"), "if (a) { b; c; }");
+assert.equal(compile("if a b else c"), "var a, b, c; if (a) { b; } else { c; }");
+assert.equal(compile("if a\nb\nelse\nc\nend"), "var a, b, c; if (a) { b; } else { c; }");
+assert.equal(compile("if a\n b\n c\nend"), "var a, b, c; if (a) { b; c; }");
 
 // Unclosed if command
 
@@ -57,5 +57,5 @@ function(err) {
 
 // Compile commands
 
-assert.equal(compile("a\nb\n"), "a; b;");
-assert.equal(compile("if a b\nif c d"), "if (a) { b; } if (c) { d; }");
+assert.equal(compile("a\nb\n"), "var a, b; a; b;");
+assert.equal(compile("if a b\nif c d"), "var a, b, c, d; if (a) { b; } if (c) { d; }");
