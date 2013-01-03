@@ -103,3 +103,9 @@ assert.equal(compileCommands("a -= 1"), "a -= 1;");
 assert.equal(compileCommands("a *= 1"), "a *= 1;");
 assert.equal(compileCommands("a /= 1"), "a /= 1;");
 
+// Compile call
+
+assert.equal(compileCommand("print()"), "print();");
+assert.equal(compileCommand("print('hello')"), "print('hello');");
+assert.equal(compileCommand("print('hello', ' ', 'Adam')"), "print('hello', ' ', 'Adam');");
+
