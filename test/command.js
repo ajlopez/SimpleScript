@@ -54,3 +54,16 @@ function(err) {
 
 assert.equal(compileCommand("if a b"), "if (a) { b; }");
 assert.equal(compileCommand("if a\n b\n end"), "if (a) { b; }");
+
+// Unclosed if command
+
+assert.throws(function() {
+    var parser = new Parser('if a\nb');
+    parser.parseCommand();
+},
+function(err) {
+    assert.ok(err);
+    assert.equal(err, "expected 'end'");
+    return true;
+});
+
