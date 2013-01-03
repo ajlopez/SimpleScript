@@ -87,3 +87,6 @@ getToken(',', ',', TokenType.Separator);
 getToken('(', '(', TokenType.Separator);
 getToken(')', ')', TokenType.Separator);
 
+// Assigments
+
+getToken('=', '=', TokenType.Assignment);
