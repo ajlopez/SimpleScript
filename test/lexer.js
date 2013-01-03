@@ -1,5 +1,5 @@
 
-var simplescript = require('../'),
+var simplescript = require('../').complete(),
     assert = require('assert');
     
 // Lexer defined
