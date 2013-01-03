@@ -59,3 +59,9 @@ function(err) {
 
 assert.equal(compile("a\nb\n"), "var a, b; a; b;");
 assert.equal(compile("if a b\nif c d"), "var a, b, c, d; if (a) { b; } if (c) { d; }");
+assert.equal(compile("a=1"), "var a; a = 1;");
+assert.equal(compile("a+=1"), "var a; a += 1;");
+assert.equal(compile("a-=1"), "var a; a -= 1;");
+assert.equal(compile("a*=2"), "var a; a *= 2;");
+assert.equal(compile("a/=3"), "var a; a /= 3;");
+assert.equal(compile("a=b"), "var a, b; a = b;");
