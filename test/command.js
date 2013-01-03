@@ -59,6 +59,7 @@ assert.equal(compileCommand("if a\n b\n end"), "if (a) { b; }");
 
 assert.equal(compileCommand("if a b else c"), "if (a) { b; } else { c; }");
 assert.equal(compileCommand("if a\nb\nelse\nc\nend"), "if (a) { b; } else { c; }");
+assert.equal(compileCommand("if a\n b\n c\nend"), "if (a) { b; c; }");
 
 // Unclosed if command
 
