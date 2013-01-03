@@ -93,3 +93,4 @@ function(err) {
 // Compile commands
 
 assert.equal(compileCommands("a\nb\n"), "a; b;");
+assert.equal(compileCommands("if a b\nif c d"), "if (a) { b; } if (c) { d; }");
