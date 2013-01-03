@@ -95,7 +95,11 @@ function(err) {
 assert.equal(compileCommands("a\nb\n"), "a; b;");
 assert.equal(compileCommands("if a b\nif c d"), "if (a) { b; } if (c) { d; }");
 
-// Compile assign command
+// Compile assign commands
 
 assert.equal(compileCommands("a = 1"), "a = 1;");
+assert.equal(compileCommands("a += 1"), "a += 1;");
+assert.equal(compileCommands("a -= 1"), "a -= 1;");
+assert.equal(compileCommands("a *= 1"), "a *= 1;");
+assert.equal(compileCommands("a /= 1"), "a /= 1;");
 

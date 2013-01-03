@@ -87,6 +87,17 @@ getToken(',', ',', TokenType.Separator);
 getToken('(', '(', TokenType.Separator);
 getToken(')', ')', TokenType.Separator);
 
+// Operators
+
+getToken('+', '+', TokenType.Operator);
+getToken('-', '-', TokenType.Operator);
+getToken('*', '*', TokenType.Operator);
+getToken('/', '/', TokenType.Operator);
+
 // Assigments
 
 getToken('=', '=', TokenType.Assignment);
+getToken('+=', '+=', TokenType.Assignment);
+getToken('-=', '-=', TokenType.Assignment);
+getToken('*=', '*=', TokenType.Assignment);
+getToken('/=', '/=', TokenType.Assignment);
