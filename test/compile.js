@@ -65,3 +65,7 @@ assert.equal(compile("a-=1"), "var a; a -= 1;");
 assert.equal(compile("a*=2"), "var a; a *= 2;");
 assert.equal(compile("a/=3"), "var a; a /= 3;");
 assert.equal(compile("a=b"), "var a, b; a = b;");
+
+// Compile external call
+
+assert.equal(compile("print('hello')"), "print('hello');");
