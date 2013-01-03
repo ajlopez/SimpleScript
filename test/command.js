@@ -53,3 +53,4 @@ function(err) {
 // Compile if
 
 assert.equal(compileCommand("if a b"), "if (a) { b; }");
+assert.equal(compileCommand("if a\n b\n end"), "if (a) { b; }");
