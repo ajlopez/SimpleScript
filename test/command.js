@@ -49,3 +49,7 @@ function(err) {
     assert.equal(err, "unexpected 'bar'");
     return true;
 });
+
+// Compile if
+
+assert.equal(compileCommand("if a b"), "if (a) { b; }");
