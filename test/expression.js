@@ -1,56 +1,51 @@
 
-var simplescript = require('../').complete(),
-    assert = require('assert');
-    
-// Parser defined
-
-assert.ok(simplescript.Parser);
+var simplescript = require('../').complete();
 
 var Parser = simplescript.Parser;
 
-// parseExpression defined
+exports['parseExpression defined'] = function (test) {
+    var parser = new Parser();
 
-var parser = new Parser();
+    test.ok(parser.parseExpression);
+    test.equal(typeof parser.parseExpression, 'function');
+}
 
-assert.ok(parser.parseExpression);
-assert.equal(typeof parser.parseExpression, 'function');
-
-function compileExpression(text) {
+function compileExpression(text, test) {
     var parser = new Parser(text);
     var expr = parser.parseExpression();
-    assert.ok(expr);
+    test.ok(expr);
     var code = expr.compile();
-    assert.ok(code);
-    assert.equal(parser.parseExpression(), null);
+    test.ok(code);
+    test.equal(parser.parseExpression(), null);
     return code;
 }
 
-// Compile integer
+exports['Compile integer'] = function (test) {
+    test.equal(compileExpression('123', test), '123');
+}
 
-assert.equal(compileExpression('123'), '123');
+exports['Compile string without quotes inside'] = function (test) {
+    test.equal(compileExpression("'foo'", test), "'foo'");
+    test.equal(compileExpression('"foo"', test), "'foo'");
+}
 
-// Compile string without quotes inside
+exports['Compile name'] = function (test) {
+    test.equal(compileExpression("foo", test), "foo");
+}
 
-assert.equal(compileExpression("'foo'"), "'foo'");
-assert.equal(compileExpression('"foo"'), "'foo'");
+exports['Qualified name'] = function (test) {
+    test.equal(compileExpression("foo.bar", test), "foo.bar");
+}
 
-// Compile name
-
-assert.equal(compileExpression("foo"), "foo");
-
-// Qualified name
-
-assert.equal(compileExpression("foo.bar"), "foo.bar");
-
-// Invalid qualified name
-
-assert.throws(function() {
-    var parser = new Parser("foo.123");
-    parser.parseExpression();
-},
-function(err) {
-    assert.ok(err);
-    assert.equal(err, 'name expected');
-    return true;
-});
+exports['Invalid qualified name'] = function (test) {
+    test.throws(function() {
+        var parser = new Parser("foo.123");
+        parser.parseExpression();
+    },
+    function(err) {
+        test.ok(err);
+        test.equal(err, 'name expected');
+        return true;
+    });
+}
 

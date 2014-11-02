@@ -1,103 +1,93 @@
 
-var simplescript = require('../').complete(),
-    assert = require('assert');
+var simplescript = require('../').complete();
     
-// Lexer defined
-
-assert.ok(simplescript.Lexer);
-
 var Lexer = simplescript.Lexer;
-
-// TokenType defined
-
-assert.ok(simplescript.TokenType);
-
 var TokenType = simplescript.TokenType;
 
-// nextToken defined
+exports['nextToken defined'] = function (test) {
+    var lexer = new simplescript.Lexer();
 
-var lexer = new simplescript.Lexer();
+    test.ok(lexer.nextToken);
+    test.equal(typeof lexer.nextToken, 'function');
+}
 
-assert.ok(lexer.nextToken);
-assert.equal(typeof lexer.nextToken, 'function');
+exports['Get null'] = function (test) {
+    var lexer = new simplescript.Lexer(null);
+    test.equal(lexer.nextToken(), null);
+}
 
-// Get null
-
-var lexer = new simplescript.Lexer(null);
-assert.equal(lexer.nextToken(), null);
-
-function getToken(text, value, type) {
+function getToken(text, value, type, test) {
     var lexer = new Lexer(text);
     var token = lexer.nextToken();
-    assert.ok(token);
-    assert.equal(token.value, value);
-    assert.equal(token.type, type);
-    assert.equal(lexer.nextToken(), null);
+    test.ok(token);
+    test.equal(token.value, value);
+    test.equal(token.type, type);
+    test.equal(lexer.nextToken(), null);
 };
 
-// Get names
+exports['Get names'] = function (test) {
+    getToken('foo', 'foo', TokenType.Name, test);
+    getToken('foo123', 'foo123', TokenType.Name, test);
+    getToken('foo_123', 'foo_123', TokenType.Name, test);
+    getToken('_foo', '_foo', TokenType.Name, test);
+}
 
-getToken('foo', 'foo', TokenType.Name);
-getToken('foo123', 'foo123', TokenType.Name);
-getToken('foo_123', 'foo_123', TokenType.Name);
-getToken('_foo', '_foo', TokenType.Name);
+exports['Get integer'] = function (test) {
+    getToken('123', '123', TokenType.Integer, test);
+    getToken('1234567890', '1234567890', TokenType.Integer, test);
+}
 
-// Get integer
+exports['Skip spaces'] = function (test) {
+    getToken('  foo   ', 'foo', TokenType.Name, test);
+    getToken('  123   ', '123', TokenType.Integer, test);
+}
 
-getToken('123', '123', TokenType.Integer);
-getToken('1234567890', '1234567890', TokenType.Integer);
+exports['Get simple double quoted string'] = function (test) {
+    getToken('"foo"', 'foo', TokenType.String, test);
+    getToken('"123"', '123', TokenType.String, test);
+}
 
-// Skip spaces
+exports['Get simple single quoted string'] = function (test) {
+    getToken("'foo'", 'foo', TokenType.String, test);
+    getToken("'123'", '123', TokenType.String, test);
+}
 
-getToken('  foo   ', 'foo', TokenType.Name);
-getToken('  123   ', '123', TokenType.Integer);
+exports['Unclosed string'] = function (test) {
+    test.throws(function() {
+        var lexer = new Lexer('"foo');
+        lexer.nextToken();
+    },
+    function(err) {
+        test.ok(err);
+        test.equal(err, 'unclosed string');
+        return true;
+    });
+}
 
-// Get simple double quoted string
+exports['New line'] = function (test) {
+    getToken('\n', '\n', TokenType.NewLine, test);
+    getToken('\r\n', '\r\n', TokenType.NewLine, test);
+    getToken('\r', '\r', TokenType.NewLine, test);
+}
 
-getToken('"foo"', 'foo', TokenType.String);
-getToken('"123"', '123', TokenType.String);
+exports['Separators'] = function (test) {
+    getToken('.', '.', TokenType.Separator, test);
+    getToken(',', ',', TokenType.Separator, test);
+    getToken('(', '(', TokenType.Separator, test);
+    getToken(')', ')', TokenType.Separator, test);
+}
 
-// Get simple single quoted string
+exports['Operators'] = function (test) {
+    getToken('+', '+', TokenType.Operator, test);
+    getToken('-', '-', TokenType.Operator, test);
+    getToken('*', '*', TokenType.Operator, test);
+    getToken('/', '/', TokenType.Operator, test);
+}
 
-getToken("'foo'", 'foo', TokenType.String);
-getToken("'123'", '123', TokenType.String);
-
-// Unclosed string
-
-assert.throws(function() {
-    var lexer = new Lexer('"foo');
-    lexer.nextToken();
-},
-function(err) {
-    assert.ok(err);
-    assert.equal(err, 'unclosed string');
-    return true;
-});
-
-// New line
-
-getToken('\n', '\n', TokenType.NewLine);
-getToken('\r\n', '\r\n', TokenType.NewLine);
-getToken('\r', '\r', TokenType.NewLine);
-
-// Separators
-
-getToken('.', '.', TokenType.Separator);
-getToken(',', ',', TokenType.Separator);
-getToken('(', '(', TokenType.Separator);
-getToken(')', ')', TokenType.Separator);
-
-// Operators
-
-getToken('+', '+', TokenType.Operator);
-getToken('-', '-', TokenType.Operator);
-getToken('*', '*', TokenType.Operator);
-getToken('/', '/', TokenType.Operator);
-
-// Assigments
-
-getToken('=', '=', TokenType.Assignment);
-getToken('+=', '+=', TokenType.Assignment);
-getToken('-=', '-=', TokenType.Assignment);
-getToken('*=', '*=', TokenType.Assignment);
-getToken('/=', '/=', TokenType.Assignment);
+exports['Assigments'] = function (test) {
+    getToken('=', '=', TokenType.Assignment, test);
+    getToken('+=', '+=', TokenType.Assignment, test);
+    getToken('-=', '-=', TokenType.Assignment, test);
+    getToken('*=', '*=', TokenType.Assignment, test);
+    getToken('/=', '/=', TokenType.Assignment, test);
+}

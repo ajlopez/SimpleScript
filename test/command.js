@@ -1,111 +1,105 @@
 
-var simplescript = require('../').complete(),
-    assert = require('assert');
+var simplescript = require('../').complete();
     
-// Parser defined
-
-assert.ok(simplescript.Parser);
-
 var Parser = simplescript.Parser;
 
-// parseCommand defined
+exports['parseCommand defined'] = function (test) {
+    var parser = new Parser();
 
-var parser = new Parser();
+    test.ok(parser.parseCommand);
+    test.equal(typeof parser.parseCommand, 'function');
+}
 
-assert.ok(parser.parseCommand);
-assert.equal(typeof parser.parseCommand, 'function');
+exports['parseCommands defined'] = function (test) {
+    var parser = new Parser();
 
-// parseCommands defined
+    test.ok(parser.parseCommands);
+    test.equal(typeof parser.parseCommands, 'function');
+}
 
-var parser = new Parser();
-
-assert.ok(parser.parseCommands);
-assert.equal(typeof parser.parseCommands, 'function');
-
-function compileCommand(text) {
+function compileCommand(text, test) {
     var parser = new Parser(text);
     var cmd = parser.parseCommand();
-    assert.ok(cmd);
+    test.ok(cmd);
     var code = cmd.compile();
-    assert.ok(code);
-    assert.equal(parser.parseCommand(), null);
+    test.ok(code);
+    test.equal(parser.parseCommand(), null);
     return code;
 }
 
-function compileCommands(text) {
+function compileCommands(text, test) {
     var parser = new Parser(text);
     var cmd = parser.parseCommands();
-    assert.ok(cmd);
+    test.ok(cmd);
     var code = cmd.compile();
-    assert.ok(code);
-    assert.equal(parser.parseCommand(), null);
+    test.ok(code);
+    test.equal(parser.parseCommand(), null);
     return code;
 }
 
-// Compile integer
+exports['Compile integer'] = function (test) {
+    test.equal(compileCommand('123', test), '123;');
+}
 
-assert.equal(compileCommand('123'), '123;');
+exports['Compile string without quotes inside'] = function (test) {
+    test.equal(compileCommand("'foo'", test), "'foo';");
+    test.equal(compileCommand('"foo"', test), "'foo';");
+}
 
-// Compile string without quotes inside
+exports['Compile name'] = function (test) {
+    test.equal(compileCommand("foo", test), "foo;");
+}
 
-assert.equal(compileCommand("'foo'"), "'foo';");
-assert.equal(compileCommand('"foo"'), "'foo';");
+exports['Unclosed command'] = function (test) {
+    test.throws(function() {
+        var parser = new Parser('foo bar');
+        parser.parseCommand();
+    },
+    function(err) {
+        test.ok(err);
+        test.equal(err, "unexpected 'bar'");
+        return true;
+    });
+}
 
-// Compile name
+exports['Compile if'] = function (test) {
+    test.equal(compileCommand("if a b", test), "if (a) { b; }");
+    test.equal(compileCommand("if a\n b\n end", test), "if (a) { b; }");
+}
 
-assert.equal(compileCommand("foo"), "foo;");
+exports['Compile if with else'] = function (test) {
+    test.equal(compileCommand("if a b else c", test), "if (a) { b; } else { c; }");
+    test.equal(compileCommand("if a\nb\nelse\nc\nend", test), "if (a) { b; } else { c; }");
+    test.equal(compileCommand("if a\n b\n c\nend", test), "if (a) { b; c; }");
+}
 
-// Unclosed command
+exports['Unclosed if command'] = function (test) {
+    test.throws(function() {
+        var parser = new Parser('if a\nb');
+        parser.parseCommand();
+    },
+    function(err) {
+        test.ok(err);
+        test.equal(err, "expected 'end'");
+        return true;
+    });
+}
 
-assert.throws(function() {
-    var parser = new Parser('foo bar');
-    parser.parseCommand();
-},
-function(err) {
-    assert.ok(err);
-    assert.equal(err, "unexpected 'bar'");
-    return true;
-});
+exports['Compile commands'] = function (test) {
+    test.equal(compileCommands("a\nb\n", test), "a; b;");
+    test.equal(compileCommands("if a b\nif c d", test), "if (a) { b; } if (c) { d; }");
+}
 
-// Compile if
+exports['Compile assign commands'] = function (test) {
+    test.equal(compileCommands("a = 1", test), "a = 1;");
+    test.equal(compileCommands("a += 1", test), "a += 1;");
+    test.equal(compileCommands("a -= 1", test), "a -= 1;");
+    test.equal(compileCommands("a *= 1", test), "a *= 1;");
+    test.equal(compileCommands("a /= 1", test), "a /= 1;");
+}
 
-assert.equal(compileCommand("if a b"), "if (a) { b; }");
-assert.equal(compileCommand("if a\n b\n end"), "if (a) { b; }");
-
-// Compile if with else
-
-assert.equal(compileCommand("if a b else c"), "if (a) { b; } else { c; }");
-assert.equal(compileCommand("if a\nb\nelse\nc\nend"), "if (a) { b; } else { c; }");
-assert.equal(compileCommand("if a\n b\n c\nend"), "if (a) { b; c; }");
-
-// Unclosed if command
-
-assert.throws(function() {
-    var parser = new Parser('if a\nb');
-    parser.parseCommand();
-},
-function(err) {
-    assert.ok(err);
-    assert.equal(err, "expected 'end'");
-    return true;
-});
-
-// Compile commands
-
-assert.equal(compileCommands("a\nb\n"), "a; b;");
-assert.equal(compileCommands("if a b\nif c d"), "if (a) { b; } if (c) { d; }");
-
-// Compile assign commands
-
-assert.equal(compileCommands("a = 1"), "a = 1;");
-assert.equal(compileCommands("a += 1"), "a += 1;");
-assert.equal(compileCommands("a -= 1"), "a -= 1;");
-assert.equal(compileCommands("a *= 1"), "a *= 1;");
-assert.equal(compileCommands("a /= 1"), "a /= 1;");
-
-// Compile call
-
-assert.equal(compileCommand("print()"), "print();");
-assert.equal(compileCommand("print('hello')"), "print('hello');");
-assert.equal(compileCommand("print('hello', ' ', 'Adam')"), "print('hello', ' ', 'Adam');");
-
+exports['Compile call'] = function (test) {
+    test.equal(compileCommand("print()", test), "print();");
+    test.equal(compileCommand("print('hello')", test), "print('hello');");
+    test.equal(compileCommand("print('hello', ' ', 'Adam')", test), "print('hello', ' ', 'Adam');");
+}

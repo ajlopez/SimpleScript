@@ -1,71 +1,69 @@
 
-var simplescript = require('../'),
-    assert = require('assert');
-
-// compile defined
-
-assert.ok(simplescript.compile);
-assert.equal(typeof simplescript.compile, 'function');
+var simplescript = require('../');
 
 function compile(text) {
     return simplescript.compile(text);
 }
 
-assert.equal(compile('123'), '123;');
+exports['Compile integer'] = function (test) {
+    test.equal(compile('123'), '123;');
+}
 
-// Compile string without quotes inside
+exports['Compile string without quotes inside'] = function (test) {
+    test.equal(compile("'foo'"), "'foo';");
+    test.equal(compile('"foo"'), "'foo';");
+}
 
-assert.equal(compile("'foo'"), "'foo';");
-assert.equal(compile('"foo"'), "'foo';");
+exports['Compile name'] = function (test) {
+    test.equal(compile("foo"), "var foo; foo;");
+}
 
-// Compile name
+exports['Unclosed command'] = function (test) {
+    test.throws(function() {
+        compile('foo bar');
+    },
+    function(err) {
+        test.ok(err);
+        test.equal(err, "unexpected 'bar'");
+        return true;
+    });
+}
 
-assert.equal(compile("foo"), "var foo; foo;");
+exports['Compile if'] = function (test) {
+    test.equal(compile("if a b"), "var a, b; if (a) { b; }");
+    test.equal(compile("if a\n b\n end"), "var a, b; if (a) { b; }");
+}
 
-// Unclosed command
+exports['Compile if with else'] = function (test) {
+    test.equal(compile("if a b else c"), "var a, b, c; if (a) { b; } else { c; }");
+    test.equal(compile("if a\nb\nelse\nc\nend"), "var a, b, c; if (a) { b; } else { c; }");
+    test.equal(compile("if a\n b\n c\nend"), "var a, b, c; if (a) { b; c; }");
+}
 
-assert.throws(function() {
-    compile('foo bar');
-},
-function(err) {
-    assert.ok(err);
-    assert.equal(err, "unexpected 'bar'");
-    return true;
-});
+exports['Unclosed if command'] = function (test) {
+    test.throws(function() {
+        compile('if a\nb');
+    },
+    function(err) {
+        test.ok(err);
+        test.equal(err, "expected 'end'");
+        return true;
+    });
+}
 
-// Compile if
+exports['Compile commands'] = function (test) {
+    test.equal(compile("a\nb\n"), "var a, b; a; b;");
+    test.equal(compile("if a b\nif c d"), "var a, b, c, d; if (a) { b; } if (c) { d; }");
+    test.equal(compile("a=1"), "var a; a = 1;");
+    test.equal(compile("a+=1"), "var a; a += 1;");
+    test.equal(compile("a-=1"), "var a; a -= 1;");
+    test.equal(compile("a*=2"), "var a; a *= 2;");
+    test.equal(compile("a/=3"), "var a; a /= 3;");
+    test.equal(compile("a=b"), "var a, b; a = b;");
+}
 
-assert.equal(compile("if a b"), "var a, b; if (a) { b; }");
-assert.equal(compile("if a\n b\n end"), "var a, b; if (a) { b; }");
+exports['Compile external call'] = function (test) {
+    test.equal(compile("print('hello')"), "print('hello');");
+}
 
-// Compile if with else
 
-assert.equal(compile("if a b else c"), "var a, b, c; if (a) { b; } else { c; }");
-assert.equal(compile("if a\nb\nelse\nc\nend"), "var a, b, c; if (a) { b; } else { c; }");
-assert.equal(compile("if a\n b\n c\nend"), "var a, b, c; if (a) { b; c; }");
-
-// Unclosed if command
-
-assert.throws(function() {
-    compile('if a\nb');
-},
-function(err) {
-    assert.ok(err);
-    assert.equal(err, "expected 'end'");
-    return true;
-});
-
-// Compile commands
-
-assert.equal(compile("a\nb\n"), "var a, b; a; b;");
-assert.equal(compile("if a b\nif c d"), "var a, b, c, d; if (a) { b; } if (c) { d; }");
-assert.equal(compile("a=1"), "var a; a = 1;");
-assert.equal(compile("a+=1"), "var a; a += 1;");
-assert.equal(compile("a-=1"), "var a; a -= 1;");
-assert.equal(compile("a*=2"), "var a; a *= 2;");
-assert.equal(compile("a/=3"), "var a; a /= 3;");
-assert.equal(compile("a=b"), "var a, b; a = b;");
-
-// Compile external call
-
-assert.equal(compile("print('hello')"), "print('hello');");
