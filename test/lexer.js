@@ -1,23 +1,22 @@
 
-var simplescript = require('../').complete();
+var sslexer = require('../lib/lexer');
     
-var Lexer = simplescript.Lexer;
-var TokenType = simplescript.TokenType;
+var TokenType = sslexer.TokenType;
 
 exports['nextToken defined'] = function (test) {
-    var lexer = new simplescript.Lexer();
+    var lexer = sslexer.lexer();
 
     test.ok(lexer.nextToken);
     test.equal(typeof lexer.nextToken, 'function');
 }
 
 exports['Get null'] = function (test) {
-    var lexer = new simplescript.Lexer(null);
+    var lexer = sslexer.lexer(null);
     test.equal(lexer.nextToken(), null);
 }
 
 function getToken(text, value, type, test) {
-    var lexer = new Lexer(text);
+    var lexer = sslexer.lexer(text);
     var token = lexer.nextToken();
     test.ok(token);
     test.equal(token.value, value);
@@ -54,7 +53,7 @@ exports['Get simple single quoted string'] = function (test) {
 
 exports['Unclosed string'] = function (test) {
     test.throws(function() {
-        var lexer = new Lexer('"foo');
+        var lexer = sslexer.lexer('"foo');
         lexer.nextToken();
     },
     function(err) {
