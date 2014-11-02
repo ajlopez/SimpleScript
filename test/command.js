@@ -1,24 +1,22 @@
 
-var simplescript = require('../').complete();
-    
-var Parser = simplescript.Parser;
+var ssparser = require('../lib/parser');
 
 exports['parseCommand defined'] = function (test) {
-    var parser = new Parser();
+    var parser = ssparser.parser();
 
     test.ok(parser.parseCommand);
     test.equal(typeof parser.parseCommand, 'function');
 }
 
 exports['parseCommands defined'] = function (test) {
-    var parser = new Parser();
+    var parser = ssparser.parser();
 
     test.ok(parser.parseCommands);
     test.equal(typeof parser.parseCommands, 'function');
 }
 
 function compileCommand(text, test) {
-    var parser = new Parser(text);
+    var parser = ssparser.parser(text);
     var cmd = parser.parseCommand();
     test.ok(cmd);
     var code = cmd.compile();
@@ -28,7 +26,7 @@ function compileCommand(text, test) {
 }
 
 function compileCommands(text, test) {
-    var parser = new Parser(text);
+    var parser = ssparser.parser(text);
     var cmd = parser.parseCommands();
     test.ok(cmd);
     var code = cmd.compile();
@@ -52,7 +50,7 @@ exports['Compile name'] = function (test) {
 
 exports['Unclosed command'] = function (test) {
     test.throws(function() {
-        var parser = new Parser('foo bar');
+        var parser = ssparser.parser('foo bar');
         parser.parseCommand();
     },
     function(err) {
@@ -75,7 +73,7 @@ exports['Compile if with else'] = function (test) {
 
 exports['Unclosed if command'] = function (test) {
     test.throws(function() {
-        var parser = new Parser('if a\nb');
+        var parser = ssparser.parser('if a\nb');
         parser.parseCommand();
     },
     function(err) {

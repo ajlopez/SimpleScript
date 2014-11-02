@@ -1,17 +1,15 @@
 
-var simplescript = require('../').complete();
-
-var Parser = simplescript.Parser;
+var ssparser = require('../lib/parser');
 
 exports['parseExpression defined'] = function (test) {
-    var parser = new Parser();
+    var parser = ssparser.parser();
 
     test.ok(parser.parseExpression);
     test.equal(typeof parser.parseExpression, 'function');
 }
 
 function compileExpression(text, test) {
-    var parser = new Parser(text);
+    var parser = ssparser.parser(text);
     var expr = parser.parseExpression();
     test.ok(expr);
     var code = expr.compile();
@@ -39,7 +37,7 @@ exports['Qualified name'] = function (test) {
 
 exports['Invalid qualified name'] = function (test) {
     test.throws(function() {
-        var parser = new Parser("foo.123");
+        var parser = ssparser.parser("foo.123");
         parser.parseExpression();
     },
     function(err) {
