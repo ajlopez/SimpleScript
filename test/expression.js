@@ -35,6 +35,10 @@ exports['Qualified name'] = function (test) {
     test.equal(compileExpression("foo.bar", test), "foo.bar");
 }
 
+exports['Indexed term'] = function (test) {
+    test.equal(compileExpression("foo[bar]", test), "foo[bar]");
+}
+
 exports['Invalid qualified name'] = function (test) {
     test.throws(function() {
         var parser = ssparser.parser("foo.123");

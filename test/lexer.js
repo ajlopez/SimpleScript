@@ -76,6 +76,11 @@ exports['Separators'] = function (test) {
     getToken(')', ')', TokenType.Separator, test);
 }
 
+exports['Square Brackets as Separators'] = function (test) {
+    getToken('[', '[', TokenType.Separator, test);
+    getToken(']', ']', TokenType.Separator, test);
+}
+
 exports['Operators'] = function (test) {
     getToken('+', '+', TokenType.Operator, test);
     getToken('-', '-', TokenType.Operator, test);
