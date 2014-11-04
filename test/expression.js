@@ -22,6 +22,14 @@ exports['Compile integer'] = function (test) {
     test.equal(compileExpression('123', test), '123');
 }
 
+exports['Compile negative integer'] = function (test) {
+    test.equal(compileExpression('-123', test), '-123');
+}
+
+exports['Compile positive integer'] = function (test) {
+    test.equal(compileExpression('+123', test), '123');
+}
+
 exports['Compile string without quotes inside'] = function (test) {
     test.equal(compileExpression("'foo'", test), "'foo'");
     test.equal(compileExpression('"foo"', test), "'foo'");
