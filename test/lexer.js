@@ -36,6 +36,11 @@ exports['Get integer'] = function (test) {
     getToken('1234567890', '1234567890', TokenType.Integer, test);
 }
 
+exports['Get real'] = function (test) {
+    getToken('123.45', '123.45', TokenType.Real, test);
+    getToken('1234567890.12', '1234567890.12', TokenType.Real, test);
+}
+
 exports['Skip spaces'] = function (test) {
     getToken('  foo   ', 'foo', TokenType.Name, test);
     getToken('  123   ', '123', TokenType.Integer, test);
