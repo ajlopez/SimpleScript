@@ -30,6 +30,18 @@ exports['Compile positive integer'] = function (test) {
     test.equal(compileExpression('+123', test), '123');
 }
 
+exports['Compile real'] = function (test) {
+    test.equal(compileExpression('123.45', test), '123.45');
+}
+
+exports['Compile negative real'] = function (test) {
+    test.equal(compileExpression('-123.45', test), '-123.45');
+}
+
+exports['Compile positive real'] = function (test) {
+    test.equal(compileExpression('+123.45', test), '123.45');
+}
+
 exports['Compile string without quotes inside'] = function (test) {
     test.equal(compileExpression("'foo'", test), "'foo'");
     test.equal(compileExpression('"foo"', test), "'foo'");
