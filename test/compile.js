@@ -79,4 +79,8 @@ exports['Compile external call'] = function (test) {
     test.equal(compile("print('hello')"), "print('hello');");
 }
 
+exports['Compile external call with two arguments'] = function (test) {
+    test.equal(compile("print(a, b)"), "var a, b; print(a, b);");
+}
+
 
