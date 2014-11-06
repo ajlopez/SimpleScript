@@ -18,6 +18,10 @@ exports['Compile name'] = function (test) {
     test.equal(compile("foo"), "var foo; foo;");
 }
 
+exports['Compile indexed name'] = function (test) {
+    test.equal(compile("foo[1]"), "var foo; foo[1];");
+}
+
 exports['Unclosed command'] = function (test) {
     test.throws(function() {
         compile('foo bar');
@@ -60,6 +64,15 @@ exports['Compile commands'] = function (test) {
     test.equal(compile("a*=2"), "var a; a *= 2;");
     test.equal(compile("a/=3"), "var a; a /= 3;");
     test.equal(compile("a=b"), "var a, b; a = b;");
+}
+
+exports['Compile assign to indexed name'] = function (test) {
+    test.equal(compile("a[2]=1"), "var a; a[2] = 1;");
+    test.equal(compile("a[1]+=1"), "var a; a[1] += 1;");
+    test.equal(compile("a[1]-=1"), "var a; a[1] -= 1;");
+    test.equal(compile("a[2]*=2"), "var a; a[2] *= 2;");
+    test.equal(compile("a[1]/=3"), "var a; a[1] /= 3;");
+    test.equal(compile("a[2]=b"), "var a, b; a[2] = b;");
 }
 
 exports['Compile external call'] = function (test) {
