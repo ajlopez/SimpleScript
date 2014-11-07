@@ -43,6 +43,11 @@ exports['Compile while'] = function (test) {
     test.equal(compile("while a\n b\n end"), "var a, b; while (a) { b; }");
 }
 
+exports['Compile for'] = function (test) {
+    test.equal(compile("for k in n b"), "var k, n, b; for (k in n) { b; }");
+    test.equal(compile("for k in n\n b\n end"), "var k, n, b; for (k in n) { b; }");
+}
+
 exports['Compile if with else'] = function (test) {
     test.equal(compile("if a b else c"), "var a, b, c; if (a) { b; } else { c; }");
     test.equal(compile("if a\nb\nelse\nc\nend"), "var a, b, c; if (a) { b; } else { c; }");
