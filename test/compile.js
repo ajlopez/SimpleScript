@@ -48,6 +48,12 @@ exports['Compile for'] = function (test) {
     test.equal(compile("for k in n\n b\n end"), "var k, n, b; for (k in n) { b; }");
 }
 
+exports['Compile return'] = function (test) {
+    test.equal(compile("return"), "return;");
+    test.equal(compile("return 1"), "return 1;");
+    test.equal(compile("return a"), "var a; return a;");
+}
+
 exports['Compile if with else'] = function (test) {
     test.equal(compile("if a b else c"), "var a, b, c; if (a) { b; } else { c; }");
     test.equal(compile("if a\nb\nelse\nc\nend"), "var a, b, c; if (a) { b; } else { c; }");
