@@ -42,6 +42,10 @@ exports['Compile positive real'] = function (test) {
     test.equal(compileExpression('+123.45', test), '123.45');
 }
 
+exports['Compile expression with parenthesis'] = function (test) {
+    test.equal(compileExpression('(42)', test), '(42)');
+}
+
 exports['Compile string without quotes inside'] = function (test) {
     test.equal(compileExpression("'foo'", test), "'foo'");
     test.equal(compileExpression('"foo"', test), "'foo'");
