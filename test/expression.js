@@ -46,6 +46,13 @@ exports['Compile expression with parenthesis'] = function (test) {
     test.equal(compileExpression('(42)', test), '(42)');
 }
 
+exports['Compile binary arithmetic expressions'] = function (test) {
+    test.equal(compileExpression('1+2', test), '1 + 2');
+    test.equal(compileExpression('1-2', test), '1 - 2');
+    test.equal(compileExpression('1*2', test), '1 * 2');
+    test.equal(compileExpression('1/2', test), '1 / 2');
+}
+
 exports['Compile string without quotes inside'] = function (test) {
     test.equal(compileExpression("'foo'", test), "'foo'");
     test.equal(compileExpression('"foo"', test), "'foo'");
