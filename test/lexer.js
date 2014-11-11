@@ -93,6 +93,15 @@ exports['Operators'] = function (test) {
     getToken('/', '/', TokenType.Operator, test);
 }
 
+exports['Comparison Operators'] = function (test) {
+    getToken('==', '==', TokenType.Operator, test);
+    getToken('!=', '!=', TokenType.Operator, test);
+    getToken('<', '<', TokenType.Operator, test);
+    getToken('>', '>', TokenType.Operator, test);
+    getToken('<=', '<=', TokenType.Operator, test);
+    getToken('>=', '>=', TokenType.Operator, test);
+}
+
 exports['Assigments'] = function (test) {
     getToken('=', '=', TokenType.Assignment, test);
     getToken('+=', '+=', TokenType.Assignment, test);
