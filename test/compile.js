@@ -54,6 +54,14 @@ exports['Compile return'] = function (test) {
     test.equal(compile("return a"), "var a; return a;");
 }
 
+exports['Compile continue'] = function (test) {
+    test.equal(compile("continue"), "continue;");
+}
+
+exports['Compile break'] = function (test) {
+    test.equal(compile("break"), "break;");
+}
+
 exports['Compile if with else'] = function (test) {
     test.equal(compile("if a b else c"), "var a, b, c; if (a) { b; } else { c; }");
     test.equal(compile("if a\nb\nelse\nc\nend"), "var a, b, c; if (a) { b; } else { c; }");
