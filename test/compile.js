@@ -112,3 +112,7 @@ exports['Compile function'] = function (test) {
     test.equal(compile("function add(a, b) return a+b"), "function add(a, b) { return a + b; }");
 }
 
+exports['Compile anonymous function'] = function (test) {
+    test.equal(compile("function () return 42"), "function () { return 42; }");
+    test.equal(compile("function (a, b) return a+b"), "function (a, b) { return a + b; }");
+}
