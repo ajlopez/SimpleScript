@@ -22,6 +22,10 @@ exports['Compile indexed name'] = function (test) {
     test.equal(compile("foo[1]"), "var foo; foo[1];");
 }
 
+exports['Compile indexed assignment'] = function (test) {
+    test.equal(compile("foo[1] = 42"), "var foo; foo[1] = 42;");
+}
+
 exports['Unclosed command'] = function (test) {
     test.throws(function() {
         compile('foo bar');
